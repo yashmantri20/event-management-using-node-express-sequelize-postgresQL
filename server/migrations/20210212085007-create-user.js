@@ -24,7 +24,8 @@ module.exports = {
         type: Sequelize.STRING
       },
       eventsCreated: {
-        type: Sequelize.ARRAY(Sequelize.STRING)
+        type: Sequelize.ARRAY(Sequelize.STRING),
+        defaultValue: ['ReactJS']
       },
       eventsInvited: {
         type: Sequelize.ARRAY(Sequelize.STRING)
