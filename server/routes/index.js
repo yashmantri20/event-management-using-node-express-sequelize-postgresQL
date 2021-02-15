@@ -21,8 +21,9 @@ module.exports = (app) => {
     app.put('/:eventId/invite', validateToken, eventController.inviteUser);
     app.get('/event/invitedEvents', validateToken, eventController.showinvitedevents);
     app.put('/:eventId/updateEvent', validateToken, eventController.updateevent);
-    app.get('/event/:eventId', eventController.showspecificevent);
     app.get('/event/filterbydate', eventController.filterByDate);
     app.get('/event/pagination', eventController.pagination);
     app.get('/event/searchfilter', eventController.searchfilter);
+    app.get('/event/:eventId', eventController.showspecificevent);
+
 };

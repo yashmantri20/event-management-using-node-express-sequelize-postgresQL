@@ -202,8 +202,12 @@ module.exports = {
         try {
             const page = parseInt(req.query.page);
             const limit = parseInt(req.query.limit);
-            const sort = req.query.sort;
-            const s = sort.split(":");
+
+            let s = ['eventName', 'ASC']
+            if (req.query.sort) {
+                const sort = req.query.sort;
+                s = sort.split(":");
+            }
 
             const offset = page ? page * limit : 0;
 
