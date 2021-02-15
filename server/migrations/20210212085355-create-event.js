@@ -20,9 +20,6 @@ module.exports = {
       date: {
         type: Sequelize.STRING
       },
-      invitedUsers: {
-        type: Sequelize.ARRAY(Sequelize.INTEGER)
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

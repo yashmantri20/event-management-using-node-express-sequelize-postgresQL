@@ -26,25 +26,23 @@ module.exports = {
             message: err
         })
 
-        const findUser = await User.findOne({
-            where:
-                { email }
-        });
+        try {
+            const user = await User.create({
+                username,
+                email,
+                password: await bcrypt.hash(password, 12),
+            })
+            const token = generateToken(user)
+            return res.json({
+                message: "User Created",
+                data: { username: user.username, email: user.email, token }
+            })
+        } catch (error) {
+            res.json({
+                message: error
+            })
+        }
 
-        if (Boolean(findUser)) return res.json({
-            message: "User Already Exists"
-        })
-
-        const user = await User.create({
-            username,
-            email,
-            password: await bcrypt.hash(password, 12),
-        })
-        const token = generateToken(user)
-        return res.json({
-            message: "User Created",
-            data: { user, token }
-        })
     },
 
     async login(req, res) {
@@ -55,10 +53,12 @@ module.exports = {
             message: err
         })
         try {
+
             const findUser = await User.findOne({
                 where:
                     { email }
             });
+
             if (findUser) {
                 const user = await bcrypt.compareSync(password, findUser.dataValues.password);
                 if (!user) {
@@ -69,6 +69,7 @@ module.exports = {
             }
             return res.json({ message: "User does not exist" })
         } catch (error) {
+            console.log(error)
             return res.json({ message: "Please Try Again" })
         }
     },

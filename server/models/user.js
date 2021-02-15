@@ -5,11 +5,6 @@ module.exports = (sequelize, DataTypes) => {
     password: DataTypes.STRING,
     resetPasswordToken: DataTypes.STRING,
     resetPasswordExpires: DataTypes.STRING,
-    eventsCreated: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
-      defaultValue: ["ReactJS"]
-    },
-    eventsInvited: DataTypes.ARRAY(DataTypes.STRING)
   });
 
   User.associate = (models) => {
@@ -17,6 +12,13 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'userId',
       as: 'events',
     });
+
+    User.hasMany(models.Guest, {
+      foreignKey: 'userId',
+      as: 'users',
+    });
+
+
   };
   return User;
 };

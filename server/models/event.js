@@ -4,10 +4,13 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.STRING,
     createdBy: DataTypes.STRING,
     date: DataTypes.STRING,
-    invitedUsers: DataTypes.ARRAY(DataTypes.STRING)
   });
 
   Event.associate = (models) => {
+    Event.hasMany(models.Guest, {
+      foreignKey: 'eventId',
+      as: 'guests',
+    });
     Event.belongsTo(models.User, {
       foreignKey: 'userId',
       onDelete: 'CASCADE',

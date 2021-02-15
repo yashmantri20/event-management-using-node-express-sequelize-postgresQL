@@ -12,7 +12,8 @@ module.exports = {
         type: Sequelize.STRING
       },
       email: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: true
       },
       password: {
         type: Sequelize.STRING
@@ -22,13 +23,6 @@ module.exports = {
       },
       resetPasswordExpires: {
         type: Sequelize.STRING
-      },
-      eventsCreated: {
-        type: Sequelize.ARRAY(Sequelize.STRING),
-        defaultValue: ['ReactJS']
-      },
-      eventsInvited: {
-        type: Sequelize.ARRAY(Sequelize.STRING)
       },
       createdAt: {
         allowNull: false,
