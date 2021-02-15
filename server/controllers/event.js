@@ -1,10 +1,6 @@
 const Event = require('../models').Event;
 const User = require('../models').User;
 const Guest = require('../models').Guest;
-const Sequelize = require("sequelize");
-
-const { Op } = require("sequelize");
-
 
 const { validEventCreated, validInviteInput } = require('../../utils/EventValidation');
 
@@ -45,6 +41,8 @@ module.exports = {
                 events: userEvents
             })
         } catch (error) {
+
+            console.log(error)
             res.json({
                 message: "Please Try Again"
             })
@@ -179,86 +177,86 @@ module.exports = {
         }
     },
 
-    async filterByDate(req, res) {
-        const date = req.query.date;
-        try {
-            const event = await Event.findAll({
-                where: { date: date }
-            })
-            return res.json({
-                message: "Events on " + date,
-                events: event,
-            });
-        }
-        catch (error) {
-            res.json({
-                message: "Please Try Again",
-                error: error,
-            });
-        }
-    },
+    // async filterByDate(req, res) {
+    //     const date = req.query.date;
+    //     try {
+    //         const event = await Event.findAll({
+    //             where: { date: date }
+    //         })
+    //         return res.json({
+    //             message: "Events on " + date,
+    //             events: event,
+    //         });
+    //     }
+    //     catch (error) {
+    //         res.json({
+    //             message: "Please Try Again",
+    //             error: error,
+    //         });
+    //     }
+    // },
 
-    async pagination(req, res) {
-        try {
-            const page = parseInt(req.query.page);
-            const limit = parseInt(req.query.limit);
+    // async pagination(req, res) {
+    //     try {
+    //         const page = parseInt(req.query.page);
+    //         const limit = parseInt(req.query.limit);
 
-            let s = ['eventName', 'ASC']
-            if (req.query.sort) {
-                const sort = req.query.sort;
-                s = sort.split(":");
-            }
+    //         let s = ['eventName', 'ASC']
+    //         if (req.query.sort) {
+    //             const sort = req.query.sort;
+    //             s = sort.split(":");
+    //         }
 
-            const offset = page ? page * limit : 0;
+    //         const offset = page ? page * limit : 0;
 
-            const event = await Event.findAndCountAll({
-                limit: limit,
-                offset: offset,
-                order: [
-                    [s[0], s[1]]
-                ]
-            })
-            const totalPages = Math.ceil(event.count / limit);
-            res.json({
-                data: {
-                    "totalItems": event.count,
-                    "totalPages": totalPages,
-                    "limit": limit,
-                    "currentPageNumber": page + 1,
-                    "currentPageSize": event.rows.length,
-                    "events": event.rows
-                }
-            })
-        } catch (error) {
-            console.log(error)
-            res.json({
-                error: error,
-            });
-        }
-    },
+    //         const event = await Event.findAndCountAll({
+    //             limit: limit,
+    //             offset: offset,
+    //             order: [
+    //                 [s[0], s[1]]
+    //             ]
+    //         })
+    //         const totalPages = Math.ceil(event.count / limit);
+    //         res.json({
+    //             data: {
+    //                 "totalItems": event.count,
+    //                 "totalPages": totalPages,
+    //                 "limit": limit,
+    //                 "currentPageNumber": page + 1,
+    //                 "currentPageSize": event.rows.length,
+    //                 "events": event.rows
+    //             }
+    //         })
+    //     } catch (error) {
+    //         console.log(error)
+    //         res.json({
+    //             error: error,
+    //         });
+    //     }
+    // },
 
-    async searchfilter(req, res) {
-        const eventname = req.query.event;
-        try {
-            const event = await Event.findAll({
-                where:
-                {
-                    eventName: {
-                        [Op.iLike]: eventname + "%"
-                    }
-                }
-            })
-            return res.json({
-                message: "Events on " + eventname,
-                events: event,
-            });
-        }
-        catch (error) {
-            res.json({
-                message: "Please Try Again",
-                error: error,
-            });
-        }
-    },
+    // async searchfilter(req, res) {
+    //     const eventname = req.query.event;
+    //     try {
+    //         const event = await Event.findAll({
+    //             where:
+    //             {
+    //                 eventName: {
+    //                     [Op.iLike]: eventname + "%"
+    //                 }
+    //             }
+    //         })
+    //         return res.json({
+    //             message: "Events on " + eventname,
+    //             events: event,
+    //         });
+    //     }
+    //     catch (error) {
+    //         res.json({
+    //             message: "Please Try Again",
+    //             error: error,
+    //         });
+    //     }
+    // },
 
 };
