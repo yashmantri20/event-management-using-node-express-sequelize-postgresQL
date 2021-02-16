@@ -159,12 +159,12 @@ module.exports = {
                 where: {
                     eventId
                 },
-                include: [{ model: User, as: 'users', attributes: ["username", "email"] }],
+                include: [{ model: User, as: "users", attributes: ["username", "email"] }],
                 attributes: ['userId']
             });
 
             return res.json({
-                message: "All Events",
+                message: "Specific Event",
                 eventName: event.eventName,
                 createdBy: event.createdBy,
                 guests: invitedList
@@ -177,6 +177,39 @@ module.exports = {
         }
     },
 
+    async deleteevent(req, res) {
+        try {
+            const { eventId } = req.params;
+            const { id } = req.decoded;
+
+            const event = await Event.findByPk(eventId)
+            if (!event) return res.json({
+                message: "Event Does not exist"
+            })
+
+            if (event.userId === id) {
+                const deletedEvent = await Event.destroy({
+                    where: {
+                        id: eventId
+                    }
+                })
+
+                return res.json({
+                    message: "Event Deleted",
+                    event: deletedEvent
+                })
+            }
+            return res.json({
+                message: "Your not allowed to delete the event",
+            })
+
+        } catch (error) {
+            console.log(error)
+            res.json({
+                message: "Please Try Again"
+            })
+        }
+    }
     // async filterByDate(req, res) {
     //     const date = req.query.date;
     //     try {
