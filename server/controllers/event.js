@@ -57,6 +57,7 @@ module.exports = {
         })
 
         try {
+            const { id } = req.decoded;
             const event = await Event.findByPk(req.params.eventId);
             const user = await User.findOne({
                 where:
@@ -72,6 +73,10 @@ module.exports = {
 
             if (!user) return res.json({
                 message: "Please Enter Email who is on Event Management"
+            })
+
+            if (id !== event.userId) return res.json({
+                message: "Not allowed"
             })
 
             const userAlreadyInvited = await Guest.findOne({
@@ -154,6 +159,10 @@ module.exports = {
         try {
             const { eventId } = req.params;
             const event = await Event.findByPk(eventId);
+
+            if (!event) return res.json({
+                message: "Event does not exists"
+            })
 
             const invitedList = await Guest.findAll({
                 where: {
